@@ -2,7 +2,7 @@ import React from 'react';
 import { ReactWrapper, mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import toJson from 'enzyme-to-json';
-import configureStore from 'redux-mock-store';
+import { createTestStore } from '../__mock__/createTestStore';
 import { NotificationsPortal } from '..';
 import Notification from '../Notification';
 import { REMOVE_NOTIFICATION } from '../redux/actions/action-types';
@@ -14,9 +14,9 @@ describe('Notification portal', () => {
   beforeEach(() => {
     initialProps = {};
     middlewares = [];
-    mockStore = configureStore(middlewares);
+    mockStore = createTestStore(middlewares);
     initialProps = {
-      store: mockStore({}),
+      store: mockStore,
     };
   });
 
@@ -25,7 +25,7 @@ describe('Notification portal', () => {
       try {
         new ReactWrapper(
           mount(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore}>
               <NotificationsPortal {...initialProps} />
             </Provider>
           )
@@ -39,7 +39,7 @@ describe('Notification portal', () => {
   });
 
   it('should render notifications given from store', () => {
-    const modifiedStore = mockStore({
+    const modifiedStore = createTestStore({
       notifications: [
         {
           id: '0',
@@ -60,7 +60,7 @@ describe('Notification portal', () => {
 
   it('should render notifications given as direct props', () => {
     const wrapper = mount(
-      <Provider store={mockStore({})}>
+      <Provider store={mockStore}>
         <NotificationsPortal
           {...initialProps}
           notifications={[
@@ -79,7 +79,7 @@ describe('Notification portal', () => {
   });
 
   it('should render notifications given as direct props over store notifications', () => {
-    const modifiedStore = mockStore({
+    const modifiedStore = createTestStore({
       notifications: [
         {
           id: 'store notifications',
@@ -111,7 +111,7 @@ describe('Notification portal', () => {
   });
 
   it('should call default removeNotification function when none given', () => {
-    const modifiedStore = mockStore({
+    const modifiedStore = createTestStore({
       notifications: [
         {
           id: 'store notifications',
@@ -136,7 +136,7 @@ describe('Notification portal', () => {
   });
 
   it('should call custom removeNotification function', () => {
-    const modifiedStore = mockStore({
+    const modifiedStore = createTestStore({
       notifications: [
         {
           id: 'store notification',
@@ -158,7 +158,7 @@ describe('Notification portal', () => {
   });
 
   it('should render pagination', () => {
-    const modifiedStore = mockStore({
+    const modifiedStore = createTestStore({
       notifications: [...new Array(20)].map((_item, key) => ({
         id: `store notification ${key}`,
         variant: 'success',

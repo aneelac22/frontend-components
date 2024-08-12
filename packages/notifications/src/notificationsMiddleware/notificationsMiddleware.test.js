@@ -1,4 +1,4 @@
-import configureStore from 'redux-mock-store';
+import { createTestStore } from '../__mock__/createTestStore';
 import { createPromise as promiseMiddleware } from 'redux-promise-middleware';
 import { notificationsMiddleware } from '..';
 import { ADD_NOTIFICATION } from '../redux/actions/action-types';
@@ -25,9 +25,9 @@ describe('Notifications middleware', () => {
   beforeEach(() => {
     initialProps = {};
     middlewares = [promiseMiddleware(), notificationsMiddleware({ errorNamespaceKey: ['errors'] })];
-    mockStore = configureStore(middlewares);
+    mockStore = createTestStore(middlewares);
     initialProps = {
-      store: mockStore({}),
+      store: mockStore,
     };
   });
 
@@ -100,8 +100,8 @@ describe('Notifications middleware', () => {
   });
 
   it('should dispatch danger with text from string payload', () => {
-    mockStore = configureStore([promiseMiddleware(), notificationsMiddleware({ errorNamespaceKey: ['errors'], useStatusText: true })]);
-    const store = mockStore({});
+    mockStore = createTestStore([promiseMiddleware(), notificationsMiddleware({ errorNamespaceKey: ['errors'], useStatusText: true })]);
+    const store = mockStore;
     const expectedActions = [
       expect.objectContaining({
         type: 'FOO_PENDING',
@@ -194,8 +194,8 @@ describe('Notifications middleware', () => {
         autoDismiss: false,
       }),
     ];
-    mockStore = configureStore(middlewares);
-    const store = mockStore({});
+    mockStore = createTestStore(middlewares);
+    const store = mockStore;
 
     const expectedActions = [
       expect.objectContaining({
@@ -312,8 +312,8 @@ describe('Notifications middleware', () => {
         dispatchDefaultFailure: false,
       }),
     ];
-    mockStore = configureStore(middlewares);
-    const store = mockStore({});
+    mockStore = createTestStore(middlewares);
+    const store = mockStore;
     const expectedActions = [
       expect.objectContaining({
         type: 'FOO_PENDING',
@@ -335,8 +335,8 @@ describe('Notifications middleware', () => {
         errorDescriptionKey: 'body.description',
       }),
     ];
-    mockStore = configureStore(middlewares);
-    const store = mockStore({});
+    mockStore = createTestStore(middlewares);
+    const store = mockStore;
     const expectedActions = [
       expect.objectContaining({
         type: 'FOO_PENDING',
@@ -372,8 +372,8 @@ describe('Notifications middleware', () => {
         rejectedSuffix: 'FAILED',
       }),
     ];
-    mockStore = configureStore(middlewares);
-    const store = mockStore({});
+    mockStore = createTestStore(middlewares);
+    const store = mockStore;
 
     const action = {
       ...requestMock(false),
@@ -506,8 +506,8 @@ describe('Notifications middleware', () => {
         errorDescriptionKey: ['body.description', 'barKey'],
       }),
     ];
-    mockStore = configureStore(middlewares);
-    const store = mockStore({});
+    mockStore = createTestStore(middlewares);
+    const store = mockStore;
     const expectedActions = expect.arrayContaining([
       expect.objectContaining({
         type: ADD_NOTIFICATION,
@@ -542,8 +542,8 @@ describe('Notifications middleware', () => {
         errorDescriptionKey: ['description'],
       }),
     ];
-    mockStore = configureStore(middlewares);
-    const store = mockStore({});
+    mockStore = createTestStore(middlewares);
+    const store = mockStore;
     const expectedActions = expect.arrayContaining([
       expect.objectContaining({
         type: ADD_NOTIFICATION,
